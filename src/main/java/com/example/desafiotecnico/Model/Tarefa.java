@@ -1,13 +1,6 @@
 package com.example.desafiotecnico.Model;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
 public class Tarefa {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
     String titulo;
     String descricao;
     int prioridade;
@@ -20,10 +13,6 @@ public class Tarefa {
         this.prioridade = prioridade;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public String getTitulo() {
         return titulo;
     }
@@ -34,10 +23,6 @@ public class Tarefa {
 
     public int getPrioridade() {
         return prioridade;
-    }
-
-    public int setId() {
-        return id;
     }
 
     public void setTitulo(String titulo) {

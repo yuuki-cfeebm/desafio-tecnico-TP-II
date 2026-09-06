@@ -47,4 +47,8 @@ public class TarefaService {
         listaTarefa.remove(indice);
         return true;
     }
+
+    public int quantidadeTarefas() {
+        return listaTarefa.size();
+    }
 }

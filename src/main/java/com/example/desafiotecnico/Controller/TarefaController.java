@@ -2,6 +2,7 @@ package com.example.desafiotecnico.Controller;
 
 import com.example.desafiotecnico.Model.Tarefa;
 import com.example.desafiotecnico.Service.TarefaService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,28 +18,41 @@ public class TarefaController {
     }
 
     @GetMapping
-    public List<Tarefa> listaTarefa() {
-        return tarefaService.listar();
+    public ResponseEntity<List<Tarefa>> listaTarefa() {
+        return ResponseEntity.ok(tarefaService.listar());
     }
 
     @GetMapping("/{indice}")
-    public Tarefa buscarPorIndice(@PathVariable int indice) {
-        return tarefaService.buscarPorIndice(indice);
+    public ResponseEntity<Tarefa> buscarPorIndice(@PathVariable int indice) {
+        Tarefa tarefa = tarefaService.buscarPorIndice(indice);
+        if (tarefa == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(tarefaService.buscarPorIndice(indice));
     }
 
     @PostMapping
-    public Tarefa adicionar(@RequestBody Tarefa tarefa) {
-        return tarefaService.adicionar(tarefa);
+    public ResponseEntity<Tarefa> adicionar(@RequestBody Tarefa tarefa) {
+        Tarefa novaTarefa = tarefaService.adicionar(tarefa);
+        return ResponseEntity.status(201).body(novaTarefa);
     }
 
     @DeleteMapping("/{indice}")
-    public boolean deletar(@PathVariable int indice) {
-        return tarefaService.deletar(indice);
+    public ResponseEntity<Void> deletar(@PathVariable int indice) {
+
+        if(indice < 0 || indice >= tarefaService.quantidadeTarefas()) {
+            return ResponseEntity.notFound().build();
+        }
+        tarefaService.deletar(indice);
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{indice}")
-    public Tarefa atualizar(@PathVariable int indice, @RequestBody Tarefa tarefa) {
-        return tarefaService.atualizar(indice, tarefa);
+    public ResponseEntity<Tarefa> atualizar(@PathVariable int indice, @RequestBody Tarefa tarefa) {
+        if(indice < 0 || indice >= tarefaService.quantidadeTarefas()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.status(201).body(tarefaService.atualizar(indice, tarefa));
     }
 
 }
